@@ -1,0 +1,2 @@
+amq-kit-smoketest
+=================
