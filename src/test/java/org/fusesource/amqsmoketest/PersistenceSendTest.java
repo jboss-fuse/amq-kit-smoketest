@@ -20,7 +20,7 @@ public class PersistenceSendTest extends PersistenceTestBase {
         Producer producer = new Producer(totalMessages, jobs, TARGET_QUEUE_NAME, brokerURL, amqUser, amqPassword);
         producer.sendAllMessages();
 
-        System.out.println("Sent " + producer.suspendCount.get() + " on suspend queue, " + producer.deleteCount.get() + " on delete queue");
+        System.out.println("Sent " + producer.suspendCount.get() + " on " + jobs[0] + " queue, " + producer.deleteCount.get() + " on " + jobs[1] + " queue");
         producer.close();
     }
 }

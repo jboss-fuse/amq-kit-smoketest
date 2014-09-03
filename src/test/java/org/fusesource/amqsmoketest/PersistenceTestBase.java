@@ -9,9 +9,9 @@ public abstract class PersistenceTestBase {
     protected static String brokerURL = "tcp://localhost:61616";
     protected static String amqUser ="admin";
     protected static String amqPassword ="admin";
-    protected static final String TARGET_QUEUE_NAME = "queue://JOBS.suspend";
     protected static Integer totalMessages = 1000;
-    public static String jobs[] = new String[]{"delete", "suspend"};
+    protected static String jobs[] = new String[]{"foo", "bar"};
+    protected static final String TARGET_QUEUE_NAME = "queue://JOBS.bar";
 
 
     @BeforeClass

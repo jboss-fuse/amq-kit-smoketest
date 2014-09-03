@@ -40,6 +40,8 @@ public class PersistenceReceiveTest extends PersistenceTestBase {
         consumer.receivedCount.await(30, TimeUnit.SECONDS);
         consumer.close();
 
+        System.out.println("Received " + consumer.suspendCount.get() + " messages on foo queue, " + consumer.deleteCount.get() + " on bar queue");
+
         assertEquals(totalMessages/2, consumer.suspendCount.get());
         assertEquals(totalMessages/2, consumer.deleteCount.get());
     }
