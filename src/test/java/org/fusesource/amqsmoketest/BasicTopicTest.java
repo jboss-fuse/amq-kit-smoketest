@@ -22,7 +22,7 @@ import static org.junit.Assert.assertEquals;
 public class BasicTopicTest {
     protected static String brokerURL = "tcp://localhost:61616";
     protected static String amqUser ="admin";
-    protected static String amqPassword ="biteme";
+    protected static String amqPassword ="admin";
     protected static final String TEST_TOPIC = "aaatest";
     private static final Integer CONSUMER_COUNT = 5;
     private static final Integer MESSAGE_COUNT=100;

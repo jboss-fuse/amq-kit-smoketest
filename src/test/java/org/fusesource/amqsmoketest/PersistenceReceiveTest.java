@@ -26,9 +26,9 @@ public class PersistenceReceiveTest extends PersistenceTestBase {
 
     @Test
     public void receiveTest() throws JMSException, InterruptedException {
-        AsyncConsumer consumer = new AsyncConsumer(jobs, totalMessages, TARGET_QUEUE_NAME, brokerURL, amqUser, amqPassword);
+        AsyncConsumer consumer = new AsyncConsumer(queueNames, totalMessages, TARGET_QUEUE_NAME, brokerURL, amqUser, amqPassword);
 
-        for (String jobName : jobs) {
+        for (String jobName : queueNames) {
             Session session = consumer.getSession();
             String messageQueueName = "JOBS." + jobName;
             Destination destination = session.createQueue(messageQueueName);

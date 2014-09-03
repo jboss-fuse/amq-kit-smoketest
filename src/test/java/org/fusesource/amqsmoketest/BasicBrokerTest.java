@@ -28,7 +28,7 @@ public class BasicBrokerTest {
     protected static String amqPassword ="admin";
 
     private static Integer totalMessages = 1000;
-    public static String jobs[] = new String[]{"delete", "suspend"};
+    public static String queueNames[] = new String[]{"delete", "suspend"};
 
     @Before
     public void setUp() throws Exception {
@@ -39,10 +39,10 @@ public class BasicBrokerTest {
 
     @Test
     public void simpleProducerConsumerTest() throws Exception {
-        Producer producer = new Producer(BasicBrokerTest.totalMessages, jobs, TARGET_QUEUE_NAME, brokerURL, amqUser, amqPassword);
-        AsyncConsumer consumer = new AsyncConsumer(jobs, totalMessages, TARGET_QUEUE_NAME, brokerURL, amqUser, amqPassword);
+        Producer producer = new Producer(BasicBrokerTest.totalMessages, queueNames, TARGET_QUEUE_NAME, brokerURL, amqUser, amqPassword);
+        AsyncConsumer consumer = new AsyncConsumer(queueNames, totalMessages, TARGET_QUEUE_NAME, brokerURL, amqUser, amqPassword);
 
-        for (String jobName : BasicBrokerTest.jobs) {
+        for (String jobName : BasicBrokerTest.queueNames) {
             Session session = consumer.getSession();
             String messageQueueName = "JOBS." + jobName;
             Destination destination = session.createQueue(messageQueueName);
@@ -59,7 +59,7 @@ public class BasicBrokerTest {
         System.out.println("Sent     " + producer.suspendCount.get() + " messages on suspend queue, " + producer.deleteCount.get() + " on delete queue");
         System.out.println("Received " + consumer.suspendCount.get() + " messages on suspend queue, " + consumer.deleteCount.get() + " on delete queue");
 
-        assertEquals(totalMessages / jobs.length, consumer.suspendCount.get());
-        assertEquals(totalMessages / jobs.length, consumer.deleteCount.get());
+        assertEquals(totalMessages / queueNames.length, consumer.suspendCount.get());
+        assertEquals(totalMessages / queueNames.length, consumer.deleteCount.get());
     }
 }

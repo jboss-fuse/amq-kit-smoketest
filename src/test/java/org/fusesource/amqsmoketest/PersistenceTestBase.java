@@ -10,7 +10,7 @@ public abstract class PersistenceTestBase {
     protected static String amqUser ="admin";
     protected static String amqPassword ="admin";
     protected static Integer totalMessages = 1000;
-    protected static String jobs[] = new String[]{"foo", "bar"};
+    protected static String queueNames[] = new String[]{"foo", "bar"};
     protected static final String TARGET_QUEUE_NAME = "queue://JOBS.bar";
 
 

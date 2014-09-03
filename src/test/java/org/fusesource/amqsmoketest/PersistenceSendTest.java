@@ -17,10 +17,10 @@ public class PersistenceSendTest extends PersistenceTestBase {
 
     @Test
     public void sendTest() throws JMSException {
-        Producer producer = new Producer(totalMessages, jobs, TARGET_QUEUE_NAME, brokerURL, amqUser, amqPassword);
+        Producer producer = new Producer(totalMessages, queueNames, TARGET_QUEUE_NAME, brokerURL, amqUser, amqPassword);
         producer.sendAllMessages();
 
-        System.out.println("Sent " + producer.suspendCount.get() + " on " + jobs[0] + " queue, " + producer.deleteCount.get() + " on " + jobs[1] + " queue");
+        System.out.println("Sent " + producer.suspendCount.get() + " on " + queueNames[0] + " queue, " + producer.deleteCount.get() + " on " + queueNames[1] + " queue");
         producer.close();
     }
 }
