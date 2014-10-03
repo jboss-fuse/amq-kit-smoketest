@@ -68,6 +68,7 @@
                                 <exclude>**/BasicTopicTest.*</exclude>
                                 <exclude>**/DurableConsumerTest.*</exclude>
                                 <exclude>**/PersistenceSendTest.*</exclude>
+                                <exclude>**/MiscTest.*</exclude>
                             </excludes>
                         </configuration>
                     </plugin>
