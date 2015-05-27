@@ -38,4 +38,5 @@ echo AMQ_OPENWIRE_PROXY_PORT ${AMQ_OPENWIRE_PROXY_PORT}
 set -x
 mvn -DAMQ_USER=admin -DAMQ_PASSWORD=${AMQ_PASSWORD} -DBROKER_URL="tcp://${APP_NAME}-${SMOKETESTNAMESPACE}.openshift.example.com:${AMQ_OPENWIRE_PROXY_PORT}" clean test
 rhc app-restart ${APP_NAME}
+sleep 60s
 mvn -PpartTwo -DAMQ_USER=admin -DAMQ_PASSWORD=${AMQ_PASSWORD} -DBROKER_URL="tcp://${APP_NAME}-${SMOKETESTNAMESPACE}.openshift.example.com:${AMQ_OPENWIRE_PROXY_PORT}" clean test
