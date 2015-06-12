@@ -7,9 +7,10 @@ export APP_NAME=amqsmoketestapp
 export SMOKETESTNAMESPACE=smokenamespace
 rhc setup --rhlogin demo --password openshift --create-token --server vm.openshift.example.com
 rhc app-delete --confirm ${APP_NAME}
+rm -rf ${APP_NAME}
 sudo oo-admin-ctl-cartridge --command delete --name amq-6.2.0
 sudo yum remove --assumeyes openshift-origin-cartridge-amq
-rm -rf *.rpm    FIXME!!!!!!!!!
+rm -rf *.rpm    
 wget $OSE_AMQ_CARTRIDGE_RPM
 sudo yum --assumeyes localinstall $OSE_AMQ_CARTRIDGE_RPM
 sudo service ruby193-mcollective restart
