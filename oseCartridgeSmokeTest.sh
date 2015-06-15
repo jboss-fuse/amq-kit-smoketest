@@ -15,7 +15,10 @@ wget $OSE_AMQ_CARTRIDGE_RPM
 sudo yum --assumeyes localinstall $OSE_AMQ_CARTRIDGE_RPM
 sudo service ruby193-mcollective restart
 sudo oo-admin-ctl-cartridge --command import-profile --activate
-sudo oo-admin-ctl-cartridge --command list 
+sudo oo-admin-ctl-cartridge --command list
+
+# Remove the rpm so we don't run out of disk space
+rm -rf *.rpm
 
 #
 # Create the smoketest app
