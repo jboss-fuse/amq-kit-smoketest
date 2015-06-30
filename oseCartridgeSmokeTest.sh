@@ -6,7 +6,7 @@ export SMOKETESTNAMESPACE=smokenamespace
 rhc setup --rhlogin demo --password openshift --create-token --server vm.openshift.example.com
 rhc app-delete --confirm ${APP_NAME}
 rm -rf ${APP_NAME}
-sudo oo-admin-ctl-cartridge --command delete --name amq-6.2.0
+sudo oo-admin-ctl-cartridge --command delete --name amq-6.2.1
 sudo yum remove --assumeyes openshift-origin-cartridge-amq
 rm -rf *.rpm    
 wget $OSE_AMQ_CARTRIDGE_RPM_URL
@@ -21,7 +21,7 @@ rm -rf *.rpm
 #
 # Create the smoketest app
 # 
-rhc app-create ${APP_NAME} amq-6.2.0 --namespace ${SMOKETESTNAMESPACE}
+rhc app-create ${APP_NAME} amq-6.2.1 --namespace ${SMOKETESTNAMESPACE}
 rhc apps
 rhc show-app ${APP_NAME}
 
