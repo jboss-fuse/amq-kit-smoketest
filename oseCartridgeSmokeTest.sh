@@ -38,7 +38,7 @@ echo AMQ_OPENWIRE_PROXY_PORT ${AMQ_OPENWIRE_PROXY_PORT}
 # Run the smoke tests
 #
 set -x
-mvn --version -DAMQ_USER=admin -DAMQ_PASSWORD=${AMQ_PASSWORD} -DBROKER_URL="tcp://${APP_NAME}-${SMOKETESTNAMESPACE}.openshift.example.com:${AMQ_OPENWIRE_PROXY_PORT}" clean test
+mvn -DAMQ_USER=admin -DAMQ_PASSWORD=${AMQ_PASSWORD} -DBROKER_URL="tcp://${APP_NAME}-${SMOKETESTNAMESPACE}.openshift.example.com:${AMQ_OPENWIRE_PROXY_PORT}" clean test
 rhc app-restart ${APP_NAME}
 sleep 60s
-mvn --version -PpartTwo -DAMQ_USER=admin -DAMQ_PASSWORD=${AMQ_PASSWORD} -DBROKER_URL="tcp://${APP_NAME}-${SMOKETESTNAMESPACE}.openshift.example.com:${AMQ_OPENWIRE_PROXY_PORT}" clean test
+mvn -PpartTwo -DAMQ_USER=admin -DAMQ_PASSWORD=${AMQ_PASSWORD} -DBROKER_URL="tcp://${APP_NAME}-${SMOKETESTNAMESPACE}.openshift.example.com:${AMQ_OPENWIRE_PROXY_PORT}" clean test
