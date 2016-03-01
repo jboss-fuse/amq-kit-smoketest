@@ -21,8 +21,8 @@ node('checkin-short') {
     //def BLAH=AMQ_KIT_URL.replaceAll("^.*amq/jboss-a-mq", "")
     //def ZIPFILENAME=BLAH.replaceAll(".*\\/", "")
     //def AMQ_HOME=ZIPFILENAME.replace(".zip", "")
-    //env.ZIPFILENAME="${ZIPFILENAME}"
-    //env.AMQ_HOME="${AMQ_HOME}"
+    env.ZIPFILENAME="${ZIPFILENAME}"
+    env.AMQ_HOME="${AMQ_HOME}"
 
     sh 'env | sort'
 
