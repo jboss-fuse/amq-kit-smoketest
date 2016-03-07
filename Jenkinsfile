@@ -18,11 +18,13 @@ node('checkin-short') {
 
     // Get the zipfile name and home directory from the full download URL
     env.AMQ_KIT_URL = "${AMQ_KIT_URL}"
-    //def BLAH=AMQ_KIT_URL.replaceAll("^.*amq/jboss-a-mq", "")
-    //def ZIPFILENAME=BLAH.replaceAll(".*\\/", "")
-    //def AMQ_HOME=ZIPFILENAME.replace(".zip", "")
-    //env.ZIPFILENAME="${ZIPFILENAME}"
-    //env.AMQ_HOME="${AMQ_HOME}"
+
+    def lastSlash = AMQ_KIT_URL.lastIndexOf("/");
+    def zipFileName = AMQ_KIT_URL.substring(lastSlash + 1);
+    def amqHome = zipFileName.substring(0, zipFileName.length() - 4);
+
+    env.ZIPFILENAME="${zipFileName}"
+    env.AMQ_HOME="${amqHome}"
 
     sh 'env | sort'
 
@@ -38,6 +40,7 @@ node('checkin-short') {
     sh 'sed -i \'s/^#admin/admin/g\' ${AMQ_HOME}/etc/users.properties'
 
     // 4. Start the broker
+    stage 'starting broker'
     sh './${AMQ_HOME}/bin/start'
 
     // TODO Wait for it to start -- search for "Broker amq has started." in log, or sleep
@@ -46,16 +49,16 @@ node('checkin-short') {
 
     stage 'Part 1 of tests'
     sh 'mvn --version'
-    sh 'mvn -DAMQ_USER=admin -DAMQ_PASSWORD=admin -DBROKER_URL="tcp://localhost:61616" clean test'
+    sh 'mvn -Dmaven.test.failure.ignore? -DAMQ_USER=admin -DAMQ_PASSWORD=admin -DBROKER_URL="tcp://localhost:61616" clean test'
 
-    stage 'restart'
+    stage 'Broker Restart'
     sh './${AMQ_HOME}/bin/stop'
     sleep 30
     sh './${AMQ_HOME}/bin/start'
     sleep 60
 
     stage 'Part 2 of tests'
-    sh 'mvn -PpartTwo -DAMQ_USER=admin -DAMQ_PASSWORD=admin -DBROKER_URL="tcp://localhost:61616" test'
+    sh 'mvn -PpartTwo -Dmaven.test.failure.ignore? -DAMQ_USER=admin -DAMQ_PASSWORD=admin -DBROKER_URL="tcp://localhost:61616" test'
 
     stage 'Final shutdown'
     sh './${AMQ_HOME}/bin/stop'
