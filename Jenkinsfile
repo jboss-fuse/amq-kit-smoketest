@@ -20,7 +20,7 @@ node('checkin-short') {
     env.AMQ_KIT_URL = "${AMQ_KIT_URL}"
 
     def lastSlash = AMQ_KIT_URL.lastIndexOf("/");
-    def zipFileName = AMQ_KIT_URL.substring(lastSlash + 1);
+    def zipFileName = AMQ_KIT_URL.substring(lastSlash + 1, AMQ_KIT_URL.length());
     def amqHome = zipFileName.substring(0, zipFileName.length() - 4);
 
     env.ZIPFILENAME="${zipFileName}"
