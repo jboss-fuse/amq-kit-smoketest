@@ -2,11 +2,11 @@ node('windows') {
     // Mark the code checkout 'stage'....
     stage 'Checkout'
 
-    load 'amqSmokeTest.groovy'
-
 // Get some code from a GitHub repository
 //git url: 'git@github.com:jboss-fuse/amq-kit-smoketest.git'
     checkout scm
+
+    load 'amqSmokeTest.groovy'
 /*
 // Get the tools and override EVs which may be set on the node
     def M2_HOME = tool 'maven-3.2.3'  // TODO fix 3.3.3 on windows node
