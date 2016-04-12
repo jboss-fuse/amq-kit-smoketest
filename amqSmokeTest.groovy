@@ -3,7 +3,7 @@ stage 'Checkout'
 
 // Get some code from a GitHub repository
 //git url: 'git@github.com:jboss-fuse/amq-kit-smoketest.git'
-checkout scm
+//checkout scm
 
 // Get the tools and override EVs which may be set on the node
 def M2_HOME = tool 'maven-3.2.3'  // TODO fix 3.3.3 on windows node
