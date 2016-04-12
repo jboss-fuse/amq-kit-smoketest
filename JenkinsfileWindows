@@ -112,12 +112,4 @@ node('windows') {
             deleteDir()  //Looks like we can't do this on windows
         }
     }
-
-
-
-    echo 'WTF????'
-    bat 'dir'
-    fileExists 'amqSmokeTest.groovy'
-
-    load 'amqSmokeTest.groovy'
 }

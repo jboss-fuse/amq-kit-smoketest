@@ -1,4 +1,4 @@
-node('checkin-short') {
+node('windows') {
     // TODO
     // 1. Add a try/catch so we always shutdown the broker
 
@@ -26,10 +26,20 @@ node('checkin-short') {
     env.ZIPFILENAME="${zipFileName}"
     env.AMQ_HOME="${amqHome}"
 
-    sh 'env | sort'
+    def unix = isUnix()
+    if (unix) {
+        println("This is a Unix node")
+        sh 'env | sort'
+    } else {
+        println("NOT a unix node")
+    }
 
     // 1. Clean up from previous runs
-    sh 'rm -rf jboss-a-mq*'
+    if (unix) {
+        sh 'rm -rf jboss-a-mq*'
+    } else {
+        bat 'rm -rf jboss-a-mq*'
+    }
 
     // 2.  Download the kit and unzip it
     stage 'download'
