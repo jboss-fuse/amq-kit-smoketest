@@ -1,0 +1,7 @@
+node('windows') {
+    echo 'WTF????'
+    bat 'dir'
+    fileExists 'amqSmokeTest.groovy'
+
+    load 'amqSmokeTest.groovy'
+}
