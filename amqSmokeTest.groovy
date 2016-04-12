@@ -1,10 +1,9 @@
-// Mark the code checkout 'stage'....
-stage 'Checkout'
-
-// Get some code from a GitHub repository
+// NOTE checkout should be done by caller
+// stage 'Checkout'
 //git url: 'git@github.com:jboss-fuse/amq-kit-smoketest.git'
 //checkout scm
 
+stage 'define tools'
 // Get the tools and override EVs which may be set on the node
 def M2_HOME = tool 'maven-3.2.3'  // TODO fix 3.3.3 on windows node
 def JAVA_HOME = tool 'jdk8'
@@ -23,22 +22,15 @@ env.ZIPFILENAME="${zipFileName}"
 env.AMQ_HOME="${amqHome}"
 
 def unix = isUnix()
-if (unix) {
-    println("This is a Unix node")
-    sh 'env | sort'
-} else {
-    println("NOT a unix node")
-    bat 'set | sort'
-}
 
-// 1. Clean up from previous runs
+stage 'cleanup from previous runs'
 if (unix) {
     sh 'rm -rf jboss-a-mq*'
 } else {
     bat 'rm -rf jboss-a-mq*'
 }
 
-// 2.  Download the kit and unzip it
+// Download the kit and unzip it
 stage 'download'
 if(unix) {
     sh 'wget --no-verbose ${AMQ_KIT_URL}'
@@ -48,7 +40,7 @@ if(unix) {
     bat 'unzip -q %ZIPFILENAME%'
 }
 
-// 3. Uncomment admit user in etc/passwd
+// 3. Uncomment admin user in etc/user.properties
 if (unix) {
     sh 'sed -i \'s/^#admin/admin/g\' ${AMQ_HOME}/etc/users.properties'
 } else {
@@ -63,18 +55,16 @@ try {
     } else {
         bat '%AMQ_HOME%\\bin\\start'
     }
-
-    // TODO Wait for it to start -- search for "Broker amq has started." in log, or sleep
+    //  Wait for it to start -- search for "Broker amq has started." in log, or sleep
     sleep 90
-    //grep "Broker amq has started." ${AMQ_HOME}/data/log/amq.log
 
     stage 'Part 1 of tests'
     if (unix) {
         sh 'mvn --version'
-        sh 'mvn -Dmaven.test.failure.ignore? -DAMQ_USER=admin -DAMQ_PASSWORD=admin -DBROKER_URL="tcp://localhost:61616" clean test'
+        sh 'mvn -Dmaven.test.failure.ignore -DAMQ_USER=admin -DAMQ_PASSWORD=admin -DBROKER_URL="tcp://localhost:61616" clean test'
     } else {
         bat 'mvn --version'
-        bat 'mvn -Dmaven.test.failure.ignore? -DAMQ_USER=admin -DAMQ_PASSWORD=admin -DBROKER_URL="tcp://localhost:61616" clean test'
+        bat 'mvn -Dmaven.test.failure.ignore -DAMQ_USER=admin -DAMQ_PASSWORD=admin -DBROKER_URL="tcp://localhost:61616" clean test'
     }
 
     stage 'Broker Restart'
@@ -92,9 +82,9 @@ try {
 
     stage 'Part 2 of tests'
     if (unix) {
-        sh 'mvn -PpartTwo -Dmaven.test.failure.ignore? -DAMQ_USER=admin -DAMQ_PASSWORD=admin -DBROKER_URL="tcp://localhost:61616" test'
+        sh 'mvn -PpartTwo -Dmaven.test.failure.ignore -DAMQ_USER=admin -DAMQ_PASSWORD=admin -DBROKER_URL="tcp://localhost:61616" test'
     } else {
-        bat 'mvn -PpartTwo -Dmaven.test.failure.ignore? -DAMQ_USER=admin -DAMQ_PASSWORD=admin -DBROKER_URL="tcp://localhost:61616" test'
+        bat 'mvn -PpartTwo -Dmaven.test.failure.ignore -DAMQ_USER=admin -DAMQ_PASSWORD=admin -DBROKER_URL="tcp://localhost:61616" test'
     }
 } finally {
     stage 'Final shutdown'
