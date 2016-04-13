@@ -11,9 +11,6 @@ env.JAVA_HOME="${JAVA_HOME}"
 env.M2_HOME="${M2_HOME}"
 env.PATH = "${M2_HOME}/bin:${JAVA_HOME}/bin:${env.PATH}"
 
-// Get the zipfile name and home directory from the full download URL
-//env.AMQ_KIT_URL = "${AMQ_KIT_URL}"  // TODO is this needed?
-
 def lastSlash = AMQ_KIT_URL.lastIndexOf("/");
 def zipFileName = AMQ_KIT_URL.substring(lastSlash + 1, AMQ_KIT_URL.length());
 def amqHome = zipFileName.substring(0, zipFileName.length() - 4);
@@ -21,14 +18,12 @@ def amqHome = zipFileName.substring(0, zipFileName.length() - 4);
 stage 'cleanup from previous runs'
 cleanup("jboss-a-mq*")
 stage 'download kit'
-downloadKit(AMQ_KIT_URL, zipFileName)
-uncommentAdminuserPassword(amqHome);
+downloadAndUnzipKit(AMQ_KIT_URL, zipFileName)
+uncommentAdminUserPassword(amqHome);
 
 try {
-    // 4. Start the broker
     stage 'starting broker'
     startBroker(amqHome)
-    //  Wait for it to start -- search for "Broker amq has started." in log, or sleep
     sleep 90
 
     stage 'Part 1 of tests'
@@ -56,17 +51,16 @@ try {
     }
 }
 
-
+// TODO find somewhere to put this code so it can be shared.
 def cleanup(directoryName) {
     if (isUnix()) {
-        echo "Running unix version"
         sh 'rm -rf ' + directoryName
     } else {
         bat 'rm -rf ' + directoryName
     }
 }
 
-def downloadKit(downloadUrl, zipFileName) {
+def downloadAndUnzipKit(downloadUrl, zipFileName) {
     if(isUnix()) {
         sh 'wget --no-verbose ' + downloadUrl
         sh 'unzip -q ' + zipFileName
@@ -76,7 +70,7 @@ def downloadKit(downloadUrl, zipFileName) {
     }
 }
 
-def uncommentAdminuserPassword(amqHomeDirectory) {
+def uncommentAdminUserPassword(amqHomeDirectory) {
     if (isUnix()) {
         sh 'sed -i \'s/^#admin/admin/g\' ' + amqHomeDirectory + '/etc/users.properties'
     } else {
