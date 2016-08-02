@@ -17,6 +17,8 @@ def lastSlash = AMQ_KIT_URL.lastIndexOf("/");
 def zipFileName = AMQ_KIT_URL.substring(lastSlash + 1, AMQ_KIT_URL.length());
 def amqHome = zipFileName.substring(0, zipFileName.length() - 4);
 
+currentBuild.description = "Starting " + zipFileName
+
 stage 'cleanup from previous runs'
 cleanup("jboss-a-mq*")
 stage 'download kit'
@@ -51,6 +53,8 @@ try {
         stage 'clear out workspace'
         deleteDir()  //Looks like we can't do this on windows
     }
+
+    currentBuild.description = zipFileName
 }
 
 // TODO find somewhere to put this code so it can be shared.
