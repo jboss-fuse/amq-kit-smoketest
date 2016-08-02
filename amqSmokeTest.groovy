@@ -53,8 +53,6 @@ try {
         stage 'clear out workspace'
         deleteDir()  //Looks like we can't do this on windows
     }
-
-    currentBuild.description = zipFileName
 }
 
 // TODO find somewhere to put this code so it can be shared.
