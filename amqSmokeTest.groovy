@@ -5,7 +5,7 @@
 
 stage 'define tools'
 // Get the tools and override EVs which may be set on the node
-def M2_HOME = tool 'maven-3.2.3'  // TODO fix 3.3.3 on windows node?
+def M2_HOME = tool 'maven-3.3.9'
 def JAVA_HOME = tool 'jdk8'
 env.JAVA_HOME="${JAVA_HOME}"
 env.M2_HOME="${M2_HOME}"
