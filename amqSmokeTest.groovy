@@ -19,12 +19,6 @@ def amqHome = zipFileName.substring(0, zipFileName.length() - 4);
 
 currentBuild.description = amqHome
 
-stage 'cleanup from previous runs'
-cleanup("jboss-a-mq*")
-stage 'download kit'
-downloadAndUnzipKit(AMQ_KIT_URL, zipFileName)
-uncommentAdminUserPassword(amqHome);
-
 stage 'Update pom version'
 def pom = new File("./pom.xml");
 def updated = pom.getText().replaceAll(/<jboss.fuse.bom.version>.*<\/jboss.fuse.bom.version>/, '<jboss.fuse.bom.version>' + version +'</jboss.fuse.bom.version>');
@@ -32,6 +26,12 @@ echo '---------- new pom ----------'
 println(updated);
 pom.write(updated);
 echo '-----------------------------'
+
+stage 'cleanup from previous runs'
+cleanup("jboss-a-mq*")
+stage 'download kit'
+downloadAndUnzipKit(AMQ_KIT_URL, zipFileName)
+uncommentAdminUserPassword(amqHome);
 
 try {
     stage 'starting broker'
