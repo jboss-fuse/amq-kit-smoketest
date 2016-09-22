@@ -12,23 +12,12 @@ env.M2_HOME="${M2_HOME}"
 env.PATH = "${M2_HOME}/bin:${JAVA_HOME}/bin:${env.PATH}"
 
 stage 'set amq version'
-pwd()
-sh 'ls -alF'
-
 echo 'AMQ_KIT_URL is ' +  AMQ_KIT_URL
 def lastSlash = AMQ_KIT_URL.lastIndexOf("/");
 def zipFileName = AMQ_KIT_URL.substring(lastSlash + 1, AMQ_KIT_URL.length());
 def amqHome = zipFileName.substring(0, zipFileName.length() - 4);
 
 currentBuild.description = amqHome
-
-stage 'Update pom version'
-def pom = new File("pom.xml");
-def updated = pom.getText().replaceAll(/<jboss.fuse.bom.version>.*<\/jboss.fuse.bom.version>/, '<jboss.fuse.bom.version>' + version +'</jboss.fuse.bom.version>');
-echo '---------- new pom ----------'
-println(updated);
-pom.write(updated);
-echo '-----------------------------'
 
 stage 'cleanup from previous runs'
 cleanup("jboss-a-mq*")
