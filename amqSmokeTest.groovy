@@ -23,7 +23,7 @@ def amqHome = zipFileName.substring(0, zipFileName.length() - 4);
 currentBuild.description = amqHome
 
 stage 'Update pom version'
-def pom = new File("./pom.xml");
+def pom = new File("pom.xml");
 def updated = pom.getText().replaceAll(/<jboss.fuse.bom.version>.*<\/jboss.fuse.bom.version>/, '<jboss.fuse.bom.version>' + version +'</jboss.fuse.bom.version>');
 echo '---------- new pom ----------'
 println(updated);
