@@ -16,7 +16,7 @@ echo 'AMQ_KIT_URL is ' +  AMQ_KIT_URL
 def lastSlash = AMQ_KIT_URL.lastIndexOf("/");
 def zipFileName = AMQ_KIT_URL.substring(lastSlash + 1, AMQ_KIT_URL.length());
 def amqHome = zipFileName.substring(0, zipFileName.length() - 4);
-def version = amqHome.substring("jboss-a-mq-".size)
+def version = amqHome.substring("jboss-a-mq-".size())
 echo "Version is " + version
 
 currentBuild.description = amqHome
