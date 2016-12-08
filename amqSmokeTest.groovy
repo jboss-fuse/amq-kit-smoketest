@@ -16,6 +16,8 @@ echo 'AMQ_KIT_URL is ' +  AMQ_KIT_URL
 def lastSlash = AMQ_KIT_URL.lastIndexOf("/");
 def zipFileName = AMQ_KIT_URL.substring(lastSlash + 1, AMQ_KIT_URL.length());
 def amqHome = zipFileName.substring(0, zipFileName.length() - 4);
+def version = amqHome.substring("jboss-a-mq-".size)
+echo "Version is " + version
 
 currentBuild.description = amqHome
 
@@ -32,7 +34,7 @@ try {
 
     stage 'Part 1 of tests'
     maven('--version')
-    maven('-Dmaven.test.failure.ignore -DAMQ_USER=admin -DAMQ_PASSWORD=admin -DBROKER_URL="tcp://localhost:61616" clean test')
+    maven('-Dmaven.test.failure.ignore -DAMQ_USER=admin -DAMQ_PASSWORD=admin -DBROKER_URL="tcp://localhost:61616" -Djboss.fuse.bom.version=' + version + ' clean test')
 
     stage 'Broker Restart'
     stopBroker(amqHome)
@@ -41,7 +43,7 @@ try {
     sleep 60
 
     stage 'Part 2 of tests'
-    maven('-PpartTwo -Dmaven.test.failure.ignore -DAMQ_USER=admin -DAMQ_PASSWORD=admin -DBROKER_URL="tcp://localhost:61616" clean test')
+    maven('-PpartTwo -Dmaven.test.failure.ignore -DAMQ_USER=admin -DAMQ_PASSWORD=admin -DBROKER_URL="tcp://localhost:61616" -Djboss.fuse.bom.version=' + version + ' clean test')
 } finally {
     stage 'Final shutdown'
     stopBroker(amqHome)
